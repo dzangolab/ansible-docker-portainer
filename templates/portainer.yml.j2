@@ -1,22 +1,56 @@
 version: "3.7"
 
 networks:
+  portainer:
+    attachable: true
   {{ network }}:
     external: true
-    
+
 services:
+  portainer-agent:
+    image: portainer/agent
+    environment:
+      AGENT_CLUSTER_ADDR: tasks.agent
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /var/lib/docker/volumes:/var/lib/docker/volumes
+    networks:
+      - portainer
+    deploy:
+      mode: global
+      placement:
+        constraints:
+          - node.platform.os == linux
+          
   portainer:
     container_name: "{{ container_name }}"
+    deploy:
+      placement:
+        constraints:
+          - "node.labels.{{ label }} == true"
+          - node.role == manager
+      labels:
+        - "traefik.enable=true"
+        - "traefik.docker.network={{ network }}"
+        - "traefik.http.routers.portainer.entrypoints=websecure"
+        - "traefik.http.routers.dashboard.rule=Host(`{{ domain }}`)"
+        - "traefik.http.routers.dashboard.tls=true"
+        - "traefik.http.routers.dashboard.tls.certresolver=le"
+        - "traefik.http.routers.dashboard.tls.domains[0].main={{ domain }}"
+        - "traefik.http.services.dashboard.loadbalancer.server.port=9000"
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
     image: "{{ image }}"
-    ports:
-      - "9000:9000"
     networks:
+      - portainer
       - {{ network }}
-    restart: unless-stopped
     security_opt:
       - no-new-privileges:true
     volumes:
-      - "{{ data_dir }}:/data"
-      - /etc/localtime:/etc/localtime:ro
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-      
+      - portainer-data:
+
+volumes:
+  portainer-data:/data
