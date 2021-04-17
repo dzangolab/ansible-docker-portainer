@@ -21,13 +21,13 @@
   when: state == "started"
 
 - name: Start portainer
-  command: docker-compose -f portainer.yml up -d
+  command: docker stack deploy -c portainer.yml portainer
   args:
     chdir: "{{ deploy_dir }}"
   when: state == "started"
 
 - name: Stop portainer
-  command: docker-compose -f portainer.yml down
+  command: docker stack rm portainer
   args:
     chdir: "{{ deploy_dir }}"
   when: state == "stopped"
