@@ -1,7 +1,7 @@
 version: "3.7"
 
 networks:
-  portainer:
+  agent_network:
     driver: overlay
     attachable: true
   {{ network }}:
@@ -14,7 +14,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
       - /var/lib/docker/volumes:/var/lib/docker/volumes
     networks:
-      - portainer
+      - agent_network
     deploy:
       mode: global
       placement:
@@ -47,7 +47,7 @@ services:
         window: 120s
     image: "{{ image }}"
     networks:
-      - portainer
+      - agent_network
       - {{ network }}
     ports:
       - "9000:9000"
