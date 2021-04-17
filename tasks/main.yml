@@ -1,0 +1,33 @@
+---
+- name: Ensure portainer data directory exist
+  become: true
+  file:
+    group: "{{ deploy_group }}"
+    owner: "{{ deploy_user }}"
+    path: "{{ item }}"
+    state: directory
+    recurse: yes
+  with_items:
+    - "{{ deploy_dir }}"
+    - "{{ data_dir }}"
+
+- name: Copy files
+  become: true
+  template:
+    dest: "{{ deploy_dir }}/portainer.yml"
+    group: "{{ deploy_group }}"
+    owner: "{{ deploy_user }}"
+    src: "templates/portainer.yml.j2"
+  when: state == "started"
+
+- name: Start portainer
+  command: docker-compose -f portainer.yml up -d
+  args:
+    chdir: "{{ deploy_dir }}"
+  when: state == "started"
+
+- name: Stop portainer
+  command: docker-compose -f portainer.yml down
+  args:
+    chdir: "{{ deploy_dir }}"
+  when: state == "stopped"
