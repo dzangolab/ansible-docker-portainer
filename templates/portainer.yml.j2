@@ -50,7 +50,7 @@ services:
     security_opt:
       - no-new-privileges:true
     volumes:
-      - portainer-data:
+      - portainer-data:/data
 
 volumes:
-  portainer-data:/data
+  portainer-data:
