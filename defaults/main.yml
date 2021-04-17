@@ -7,6 +7,6 @@ deploy_user: root
 
 label: portainer 
 
-image: portainer/portainer
+image: portainer/portainer-ce
 
 state: started
