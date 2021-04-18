@@ -8,7 +8,7 @@ networks:
     external: true
 
 services:
-  portainer-agent:
+  agent:
     image: portainer/agent
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
@@ -21,23 +21,26 @@ services:
         constraints:
           - node.platform.os == linux
           
-  portainer:
+  server:
     command: -H tcp://tasks.agent:9001 --tlsskipverify
-    container_name: "{{ container_name }}"
+    container_name: server
     deploy:
       mode: replicated
       placement:
         constraints:
-          - "node.labels.{{ label }} == true"
+          - "node.labels.portainer == true"
           - node.role == manager
       labels:
         - "traefik.enable=true"
         - "traefik.docker.network={{ network }}"
-        - "traefik.http.routers.portainer.entrypoints=websecure"
-        - "traefik.http.routers.portainer.rule=Host(`{{ domain }}`)"
-        - "traefik.http.routers.portainer.tls=true"
-        - "traefik.http.routers.portainer.tls.certresolver=le"
-        - "traefik.http.routers.portainer.tls.domains[0].main={{ domain }}"
+        - "traefik.http.routers.portainer-http.entrypoints=web"
+        - "traefik.http.routers.portainer-http.middlewares=https-redirect"
+        - "traefik.http.routers.portainer-http.rule=Host(`{{ domain }}`)"
+        - "traefik.http.routers.portainer-https.entrypoints=websecure"
+        - "traefik.http.routers.portainer-https.rule=Host(`{{ domain }}`)"
+        - "traefik.http.routers.portainer-https.tls=true"
+        - "traefik.http.routers.portainer-https.tls.certresolver=le"
+        - "traefik.http.routers.portainer-https.tls.domains[0].main={{ domain }}"
         - "traefik.http.services.portainer.loadbalancer.server.port=9000"
       replicas: 1
       restart_policy:
@@ -45,7 +48,7 @@ services:
         delay: 5s
         max_attempts: 3
         window: 120s
-    image: "{{ image }}"
+    image: portainer/portainer-ce
     networks:
       - agent_network
       - {{ network }}

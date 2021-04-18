@@ -1,12 +1,6 @@
-container_name: portainer
-
 data_dir: ./portainer-data
 deploy_dir: /data
 deploy_group: root
 deploy_user: root
-
-label: portainer 
-
-image: portainer/portainer-ce
 
 state: started
