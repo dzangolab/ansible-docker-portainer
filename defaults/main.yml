@@ -4,3 +4,7 @@ deploy_group: root
 deploy_user: root
 
 state: started
+
+portainer_version: 2.16.2
+
+traefik: true

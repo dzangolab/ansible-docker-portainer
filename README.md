@@ -1,7 +1,7 @@
 dzangolab.docker_portainer
 =========
 
-Installs portainer server and agentas docker containers.
+Installs portainer server and agent as docker containers.
 
 Requirements
 ------------

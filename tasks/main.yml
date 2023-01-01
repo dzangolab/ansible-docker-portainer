@@ -2,21 +2,20 @@
 - name: Ensure portainer data directory exist
   become: true
   file:
-    group: "{{ deploy_group }}"
-    owner: "{{ deploy_user }}"
+    group: "{{ portainer_deploy_group }}"
+    owner: "{{ portainer_deploy_user }}"
     path: "{{ item }}"
     state: directory
     recurse: yes
   with_items:
-    - "{{ deploy_dir }}"
-    - "{{ data_dir }}"
+    - "{{ portainer_deploy_dir }}"
 
 - name: Copy files
   become: true
   template:
-    dest: "{{ deploy_dir }}/portainer.yml"
-    group: "{{ deploy_group }}"
-    owner: "{{ deploy_user }}"
+    dest: "{{ portainer_deploy_dir }}/portainer.yml"
+    group: "{{ portainer_deploy_group }}"
+    owner: "{{ portainer_deploy_user }}"
     src: "templates/portainer.yml.j2"
   when: state == "started"
 
@@ -24,10 +23,10 @@
   command: docker stack deploy -c portainer.yml portainer
   args:
     chdir: "{{ deploy_dir }}"
-  when: state == "started"
+  when: portainer_state == "started"
 
 - name: Stop portainer
   command: docker stack rm portainer
   args:
     chdir: "{{ deploy_dir }}"
-  when: state == "stopped"
+  when: portainer_state == "stopped"
