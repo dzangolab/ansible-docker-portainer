@@ -18,7 +18,7 @@ services:
       placement:
         constraints:
           - node.platform.os == linux
-    image: portainer/agent:{{ portainer_version }}
+    image: portainer/agent:{{ portainer__version }}
     networks:
       - "{{ portainer_network }}"
     volumes:
@@ -31,15 +31,15 @@ services:
 {% if traefik %}
       labels:
         - "traefik.enable=true"
-        - "traefik.docker.network={{ portainer_network }}"
+        - "traefik.docker.network={{ portainer__network }}"
         - "traefik.http.routers.portainer-http.entrypoints=web"
         - "traefik.http.routers.portainer-http.middlewares=https-redirect"
-        - "traefik.http.routers.portainer-http.rule=Host(`{{ portainer_domain }}`)"
+        - "traefik.http.routers.portainer-http.rule=Host(`{{ portainer__domain }}`)"
         - "traefik.http.routers.portainer-https.entrypoints=websecure"
-        - "traefik.http.routers.portainer-https.rule=Host(`{{ portainer_domain }}`)"
+        - "traefik.http.routers.portainer-https.rule=Host(`{{ portainer__domain }}`)"
         - "traefik.http.routers.portainer-https.tls=true"
         - "traefik.http.routers.portainer-https.tls.certresolver=le"
-        - "traefik.http.routers.portainer-https.tls.domains[0].main={{ portainer_domain }}"
+        - "traefik.http.routers.portainer-https.tls.domains[0].main={{ portainer__domain }}"
         - "traefik.http.services.portainer.loadbalancer.server.port=9000"
 {% endif %}
       mode: replicated
@@ -53,9 +53,9 @@ services:
         delay: 5s
         max_attempts: 3
         window: 120s
-    image: portainer/portainer-ce:{{ portainer_version }}
+    image: portainer/portainer-ce:{{ portainer__version }}
     networks:
-      - {{ portainer_network }}
+      - {{ portainer__network }}
     ports:
       - "9443:9443"
       - "9000:9000"

@@ -1,10 +1,9 @@
-data_dir: ./portainer-data
-deploy_dir: /data
-deploy_group: root
-deploy_user: root
+portainer__deploy_dir: /data
+portainer__deploy_group: root
+portainer__deploy_user: root
 
-state: started
+portainer__state: started
 
-portainer_version: 2.16.2
+portainer__version: 2.16.2
 
 traefik: true
