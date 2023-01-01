@@ -22,11 +22,11 @@
 - name: Start portainer
   command: docker stack deploy -c portainer.yml portainer
   args:
-    chdir: "{{ deploy_dir }}"
+    chdir: "{{ portainer__deploy_dir }}"
   when: portainer__state == "started"
 
 - name: Stop portainer
   command: docker stack rm portainer
   args:
-    chdir: "{{ deploy_dir }}"
+    chdir: "{{ portainer__deploy_dir }}"
   when: portainer__state == "stopped"
