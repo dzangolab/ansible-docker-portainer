@@ -34,6 +34,7 @@ services:
         - "traefik.http.routers.portainer-https.tls.certresolver=le"
         - "traefik.http.routers.portainer-https.tls.domains[0].main={{ portainer__domain }}"
         - "traefik.http.services.portainer.loadbalancer.server.port=9000"
+        - "traefik.http.routers.portainer-https.service=portainer"
 {% endif %}
       mode: replicated
       placement:
