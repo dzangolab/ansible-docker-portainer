@@ -59,3 +59,6 @@ services:
 
 volumes:
   portainer-data:
+    driver: local-persist
+    driver_opts:
+      mountpoint: {{ portainer__deploy_dir }}/data

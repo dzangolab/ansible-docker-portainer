@@ -6,6 +6,8 @@ Installs portainer server and agent as docker containers.
 Requirements
 ------------
 
+* docker (local-persist volume driver)[https://github.com/MatchbookLab/local-persist]
+
 Role Variables
 --------------
 
