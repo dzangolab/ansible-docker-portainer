@@ -1,7 +1,7 @@
+portainer__data_dir: "{{ portainer__deploy_dir }}/data"
 portainer__deploy_dir: /mnt/data/portainer
 portainer__deploy_group: root
 portainer__deploy_user: root
-portainer__data_dir: "{{ portainer_deploy_dir }}/data"
 
 portainer__state: started
 
