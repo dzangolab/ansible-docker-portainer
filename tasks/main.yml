@@ -9,6 +9,7 @@
     recurse: yes
   with_items:
     - "{{ portainer__deploy_dir }}"
+    - "{{ portainer__deploy_dir }}"
 
 - name: Copy files
   become: true
