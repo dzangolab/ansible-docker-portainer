@@ -3,8 +3,10 @@ portainer__deploy_dir: /mnt/data/portainer
 portainer__deploy_group: root
 portainer__deploy_user: root
 
+portainer__network: private
+
 portainer__state: started
 
-portainer__version: 2.18.4
+portainer__version: 2.20.1
 
 traefik: true
