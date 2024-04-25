@@ -3,7 +3,7 @@ portainer__deploy_dir: /mnt/data/portainer
 portainer__deploy_group: root
 portainer__deploy_user: root
 
-portainer__network: private
+portainer__network: portainer
 
 portainer__state: started
 
