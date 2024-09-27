@@ -7,6 +7,6 @@ portainer__network: traefik
 
 portainer__state: started
 
-portainer__version: 2.20.1
+portainer__version: 2.21.2
 
 traefik: true
